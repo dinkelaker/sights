@@ -1,6 +1,7 @@
 # sights
 
-A new Flutter project.
+A Flutter app to manage place to be.
+
 
 ## Getting Started
 
