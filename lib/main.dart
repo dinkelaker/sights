@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import './providers/great_places.dart';
+import './screens/add_place_screen.dart';
+import './screens/place_detail_screen.dart';
+import './screens/places_list_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,44 +14,17 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider.value(
       value: GreatPlaces(),
       child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: MyHomePage(),
-      ),
+          title: 'Sights',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          initialRoute: PlacesListScreen.routeName,
+          routes: {
+            AddPlaceScreen.routeName: (_) => AddPlaceScreen(),
+            PlaceDetailScreen.routeName: (_) => PlaceDetailScreen(),
+            PlacesListScreen.routeName: (_) => PlacesListScreen(),
+          }),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Secret Sights'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'No secret places collected yet.',
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Add',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}
