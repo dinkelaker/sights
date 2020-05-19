@@ -1,6 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
 import '../widgets/image_input.dart';
+
+import '../providers/great_places.dart';
 
 class AddPlaceScreen extends StatefulWidget {
   static const routeName = '/add-place';
@@ -12,7 +18,20 @@ class AddPlaceScreen extends StatefulWidget {
 class _AddPlaceScreenState extends State<AddPlaceScreen> {
   @override
   Widget build(BuildContext context) {
-    var _titleController;
+    var _titleController = TextEditingController();
+    File _pickedImage;
+
+    void _selectImage(File image) {
+      setState(() {
+        _pickedImage = image;
+      });
+    }
+
+    void _saveSight() {
+      if (_titleController.text.isEmpty || _pickedImage == null) return;
+      Provider.of<GreatPlaces>(context, listen: false).addSight(_titleController.text, _pickedImage);
+      Navigator.of(context).pop();
+    }
 
     return Scaffold(
         appBar: AppBar(
@@ -20,7 +39,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.save),
-              onPressed: () {},
+              onPressed: _saveSight,
             ),
           ],
         ),
@@ -39,7 +58,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                         controller: _titleController,
                       ),
                       SizedBox(height: 10,),
-                      ImageInput(),
+                      ImageInput(_selectImage),
                     ],
                   ),
                 ),
@@ -51,7 +70,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
               elevation: 0,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               color: Theme.of(context).accentColor,
-              onPressed: () {},
+              onPressed: _saveSight,
             ),
           ],
         ));
