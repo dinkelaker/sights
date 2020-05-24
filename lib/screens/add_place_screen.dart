@@ -16,23 +16,23 @@ class AddPlaceScreen extends StatefulWidget {
 }
 
 class _AddPlaceScreenState extends State<AddPlaceScreen> {
+  var _titleController = TextEditingController();
+  File _pickedImage;
+
+  void _selectImage(File image) {
+    setState(() {
+      _pickedImage = image;
+    });
+  }
+
+  void _saveSight() {
+    if (_titleController.text.isEmpty || _pickedImage == null) return;
+    Provider.of<GreatPlaces>(context, listen: false).addSight(_titleController.text, _pickedImage);
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var _titleController = TextEditingController();
-    File _pickedImage;
-
-    void _selectImage(File image) {
-      setState(() {
-        _pickedImage = image;
-      });
-    }
-
-    void _saveSight() {
-      if (_titleController.text.isEmpty || _pickedImage == null) return;
-      Provider.of<GreatPlaces>(context, listen: false).addSight(_titleController.text, _pickedImage);
-      Navigator.of(context).pop();
-    }
-
     return Scaffold(
         appBar: AppBar(
           title: Text('Add a new Sight'),

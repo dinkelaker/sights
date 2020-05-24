@@ -22,11 +22,10 @@ class _ImageInputState extends State<ImageInput> {
 
   File _storedImage;
 
-  _takePicture() async {
+  Future<void> _takePicture() async {
     final imageFile = await ImagePicker.pickImage(
       source: ImageSource.camera,
       maxWidth: 400,
-
     );
     setState(() {
       _storedImage = imageFile;
@@ -62,7 +61,9 @@ class _ImageInputState extends State<ImageInput> {
         ),
         Expanded(
           child: FlatButton.icon(
-            onPressed: () { _takePicture(); },
+            onPressed: () async {
+              await _takePicture();
+            },
             label: Text('Take picture'),
             textColor: Theme.of(context).primaryColor,
             icon: Icon(Icons.camera),
