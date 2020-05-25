@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import 'package:sights/widgets/location_input.dart';
 
 import '../widgets/image_input.dart';
 
@@ -27,7 +28,8 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
 
   void _saveSight() {
     if (_titleController.text.isEmpty || _pickedImage == null) return;
-    Provider.of<GreatPlaces>(context, listen: false).addSight(_titleController.text, _pickedImage);
+    Provider.of<GreatPlaces>(context, listen: false)
+        .addSight(_titleController.text, _pickedImage);
     Navigator.of(context).pop();
   }
 
@@ -57,8 +59,14 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                         decoration: InputDecoration(labelText: 'Title'),
                         controller: _titleController,
                       ),
-                      SizedBox(height: 10,),
+                      SizedBox(
+                        height: 10,
+                      ),
                       ImageInput(_selectImage),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      LocationInput(),
                     ],
                   ),
                 ),
