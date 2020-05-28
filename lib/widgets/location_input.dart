@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:sights/helpers/location_helper.dart';
-
-
+import 'package:sights/screens/map_screen.dart';
 
 class LocationInput extends StatefulWidget {
   @override
@@ -16,7 +15,28 @@ class _LocationInputState extends State<LocationInput> {
     final locationData = await Location().getLocation();
     print(locationData.latitude);
     print(locationData.longitude);
-    final staticMapImageUrl = LocationHelper.generateLocationPreviewImage(latitude: locationData.latitude, longitude: locationData.longitude,);
+    final staticMapImageUrl = LocationHelper.generateLocationPreviewImage(
+      latitude: locationData.latitude,
+      longitude: locationData.longitude,
+    );
+    setState(() {
+      _previewImageUrl = staticMapImageUrl;
+    });
+  }
+
+  Future<void> _selectOnMap() async {
+    final selectedLocation = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctxt) => MapsScreen(
+          isSelecting: true,
+        ),
+      ),
+    );
+    if (selectedLocation == null) return;
+    final staticMapImageUrl = LocationHelper.generateLocationPreviewImage(
+      latitude: selectedLocation.latitude,
+      longitude: selectedLocation.longitude,
+    );
     setState(() {
       _previewImageUrl = staticMapImageUrl;
     });
@@ -30,11 +50,11 @@ class _LocationInputState extends State<LocationInput> {
           height: 170,
           width: double.infinity,
           decoration: BoxDecoration(
-              border: Border.all(
-                width: 1,
-                color: Colors.grey,
-              ),
+            border: Border.all(
+              width: 1,
+              color: Colors.grey,
             ),
+          ),
           child: _previewImageUrl == null
               ? Text(
                   'No Location Chosen!',
@@ -59,7 +79,7 @@ class _LocationInputState extends State<LocationInput> {
               icon: Icon(Icons.map),
               label: Text('Select on Map'),
               textColor: Theme.of(context).primaryColor,
-              onPressed: () {},
+              onPressed: _selectOnMap,
             ),
           ],
         )
